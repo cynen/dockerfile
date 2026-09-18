@@ -1,0 +1,14 @@
+FROM ds-hub.gree.com/docker.io/library/debian:stable-slim
+ENV LANG en_US.UTF-8
+MAINTAINER gree
+
+ADD trixie.list /etc/apt/sources.list.d/
+ADD openjdk21 /etc/apt/preferences.d/
+
+RUN set -x \
+    && sed -i 's/deb.debian.org/tuna.gree.com/g' /etc/apt/sources.list.d/debian.sources \
+    && apt-get update && apt-get install -y --no-install-recommends tini fontconfig curl tzdata libxcb1 libx11-xcb1 libxss1 libxkbfile1 openjdk-21-jdk \
+    && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo "Asia/Shanghai" > /etc/timezone \
+    && apt-get clean tzdata
+ADD simsun.ttf /usr/share/fonts/dejavu/
